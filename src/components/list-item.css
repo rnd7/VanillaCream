@@ -1,0 +1,11 @@
+.title {
+    font-weight: bold;
+    color: blueviolet;
+    display: flex;
+    flex: 1;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}

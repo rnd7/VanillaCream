@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WCXP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="WCXP">
+    <style>
+        html,
+        body {
+            padding: 0;
+            height: 100%;
+            display: flex;
+        }
+
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        input,
+        textarea {
+            -webkit-touch-callout: default;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module">
+        import App from './components/app.js'
+        import Configuration from './model/configuration.js'
+        import SignalProcessor from "./lib/signal-processor.js";
+
+
+
+        const config = Configuration.create({
+            title: "Pirate Soup",
+            list: [{ title: "fisheyes" }, { title: "potato peel" }, { title: "incredible sauce" }]
+        })
+
+        document.body.append(App.create(config))
+        config.title = "Awful Pirate Stew"
+
+        /*
+        SignalProcessor.add(Configuration, "limit", (signal) => { console.log("class signal", signal) })
+        SignalProcessor.add(Configuration, "count", (signal) => { console.log("class signal", signal) })
+        SignalProcessor.add(config, "limit", (signal) => { console.log("instance signal", signal) })
+        SignalProcessor.add(config, "count", (signal) => { console.log("instance signal", signal) })*/
+        config.limit = 12
+        config.count++
+
+        function randomString(
+            length = 16,
+            charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        ) {
+            let s = ''
+            for (s; s.length < length; s += charset.charAt(Math.random() * charset.length | 0));
+            return s
+        }
+
+        function randomAction() {
+            const rand = Math.random()
+
+            if (rand < .2) config.append({ title: randomString() })
+            else if (rand < .4 && config.list.length > 1) config.remove(config.list[(config.list.length * Math.random()) | 0])
+            else if (rand < .8 && config.list.length) config.list[(config.list.length * Math.random()) | 0].title = randomString()
+            else config.title = randomString()
+            setTimeout(randomAction, 100)
+        }
+
+
+        setTimeout(() => {
+            config.title = "Wonderbrew"
+            config.list[2].title = "questionable sauce"
+        }, 1000)
+        setTimeout(() => {
+            config.title = "Big stink soup"
+            config.append({ title: "A bottle of Rum" })
+            config.append({ title: "Frogfeet" })
+        }, 2000)
+        setTimeout(() => {
+            config.title = "Better big stink soup"
+            config.remove(config.list[2])
+            //randomAction()
+        }, 3000)
+    </script>
+</body>
+
+</html>
