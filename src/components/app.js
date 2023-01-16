@@ -32,8 +32,8 @@ export default class App extends WebComponent {
                 padding: 10px;
             }
             .body-count {
+                font-family: sans-serif;
                 font-size: 4em;
-                height: .9em;
             }
         `)
 

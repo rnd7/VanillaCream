@@ -1,7 +1,6 @@
 # VanillaCream
 This is an early version of a WebComponent micro framework for lazy browser-based user interface development. Even though the current version of this framework is somehow feature complete, I do not recommend using it in production context. Nothing is stable.
 
-
 ## What?
 Forget React, Vue, Angular. NPM remove webpack, babel, typescript. VanillaCream is all you need. It's simple, fast and tiny. Speak the language of your runtime.
 
@@ -13,6 +12,11 @@ That's all not meant to be taken too seriously. I just had fun trying out a diff
 
 ## Look, it's mutable!
 Mutability and references are cool stuff. Keep your hierarchy, no need to normalize your data.
+
+## Try it now.
+Check out the pirate favorite stew recipe App.
+
+🚀 [Basic example](https://rnd7.github.io/VanillaCream/src/index.html)
 
 ## Concept
 
