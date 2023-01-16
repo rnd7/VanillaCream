@@ -41,25 +41,34 @@ export default class SignalProcessor {
             throw "Invalid parameters"
             return
         }
-        let listeners = SignalProcessor._targets.get(target)
-        if (!listeners) return
-        let listenersForEvent = listeners.get(event)
-        if (listenersForEvent) {
-            setTimeout(() => {
-                listenersForEvent.forEach((listener) => {
-                    listener(event, target)
-                })
-            })
-        }
 
-        let wildcardListeners = listeners.get(SignalProcessor.WILDCARD)
-        if (wildcardListeners) {
-            setTimeout(() => {
-                wildcardListeners.forEach((listener) => {
-                    listener(event, target)
-                })
-            })
+        // all listeners targeting instance
+        const targets = [SignalProcessor._targets.get(target)]
+        // all listeners targeting class
+        if (!(target instanceof Function) && target.constructor) {
+            targets.push(SignalProcessor._targets.get(target.constructor))
         }
+        targets.forEach(listeners => {
+            if (!listeners) return
+            let listenersForEvent = listeners.get(event)
+            if (listenersForEvent) {
+                // defer
+                setTimeout(() => {
+                    listenersForEvent.forEach((listener) => {
+                        listener(event, target)
+                    })
+                })
+            }
+
+            let wildcardListeners = listeners.get(SignalProcessor.WILDCARD)
+            if (wildcardListeners) {
+                setTimeout(() => {
+                    wildcardListeners.forEach((listener) => {
+                        listener(event, target)
+                    })
+                })
+            }
+        })
 
     }
 }

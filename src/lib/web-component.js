@@ -1,7 +1,8 @@
 import Binding from "./binding.js"
 import camelToKebab from "./camel-to-kebab.js"
-import DynamicData from "./dynamic-data.js"
 import getProperties from "./get-properties.js"
+import { isWrappedInstance } from "./wrap-instance.js"
+import { isWrappedList } from "./wrap-list.js"
 import SignalProcessor from "./signal-processor.js"
 
 
@@ -16,6 +17,7 @@ export default class WebComponent extends HTMLElement {
     #renderTasks = []
     #binding = null
     #callbacks = new Map()
+    #listCallbacks = new Map()
     #dataReference = new Map()
     #dataReferences = new Set()
 
@@ -29,6 +31,10 @@ export default class WebComponent extends HTMLElement {
     async init() {
         this.#wait = false
         this._triggerRender()
+    }
+
+    getReference(field) {
+        return this.#dataReference.get(field)
     }
 
     setReference(field, value) {
@@ -48,14 +54,28 @@ export default class WebComponent extends HTMLElement {
     }
 
     fromObject(opts) {
-        if (opts instanceof DynamicData) {
-            const properties = getProperties(opts, DynamicData)
+        if (opts instanceof Array) {
+            opts.forEach((opt) => { this.fromObject(opt) })
+        } else if (isWrappedInstance(opts)) {
+            const properties = getProperties(opts)
             const ownProperties = getProperties(this, WebComponent)
-            this.#dataReferences.add(opts)
             for (let [name, descriptor] of Object.entries(properties)) {
                 if (descriptor.get && ownProperties[name] && ownProperties[name].set) {
                     //this[name] = opts[name]
+                    const listCallback = (signal) => {
+                        this[name] = opts[name]
+                    }
                     const processorCallback = (signal) => {
+                        if (isWrappedList(opts[name])) {
+                            if (this.#listCallbacks.has(name) && opts !== this.#listCallbacks.get(name).reference) {
+                                SignalProcessor.remove(this.#listCallbacks.get(name).reference, SignalProcessor.WILDCARD, this.#listCallbacks.get(name).callback)
+                                this.#listCallbacks.delete(name)
+                            }
+                            if (!this.#listCallbacks.has(name)) {
+                                this.#listCallbacks.set(name, { callback: listCallback, signal: name, reference: opts[name] })
+                                SignalProcessor.add(opts[name], SignalProcessor.WILDCARD, listCallback)
+                            }
+                        }
                         if (this[name] === opts[name]) return
                         this[name] = opts[name]
                     }
@@ -72,20 +92,7 @@ export default class WebComponent extends HTMLElement {
                     processorCallback()
                 }
             }
-        } else {
-            Object.keys(opts).forEach((key) => {
-                this[key] = opts[key]
-            })
         }
-    }
-
-    toObject() {
-        const object = {}
-        for (let [key, value] of Object.entries(getProperties(this, WebComponent))) {
-            if (value.get && value.set) object[key] = this[key]
-        }
-        return object
-
     }
 
     async appendHTML(src) {
@@ -189,8 +196,12 @@ export default class WebComponent extends HTMLElement {
         for (var [name, value] of this.#callbacks) {
             SignalProcessor.remove(value.reference, name, value.callback)
         }
-        this.#dataReferences.clear()
         this.#callbacks.clear()
+        for (var [name, value] of this.#listCallbacks) {
+            SignalProcessor.remove(value.reference, name, value.callback)
+        }
+        this.#listCallbacks.clear()
+        this.#dataReferences.clear()
         this.#dataReference.clear()
         this.#renderTasks = []
         this.#binding.destroy()

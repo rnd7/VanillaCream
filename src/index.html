@@ -35,61 +35,51 @@
 <body>
     <script type="module">
         import App from './components/app.js'
-        import Configuration from './model/configuration.js'
-        import SignalProcessor from "./lib/signal-processor.js";
+        import Related from './model/related.js'
+        import Recipe from './model/recipe.js'
+        import SignalProcessor from "./lib/signal-processor.js"
+        import Ingredient from './model/ingredient.js'
 
+        // using two seperate data models for demonstration purposes 
 
-
-        const config = Configuration.create({
+        const recipe = new Recipe({
             title: "Pirate Soup",
-            list: [{ title: "fisheyes" }, { title: "potato peel" }, { title: "incredible sauce" }]
+            list: [{ name: "Fisheyes" }, { name: "Aged potato peel" }, { name: "Incredible sauce" }]
         })
 
-        document.body.append(App.create(config))
-        config.title = "Awful Pirate Stew"
+        const related = new Related()
 
-        /*
-        SignalProcessor.add(Configuration, "limit", (signal) => { console.log("class signal", signal) })
-        SignalProcessor.add(Configuration, "count", (signal) => { console.log("class signal", signal) })
-        SignalProcessor.add(config, "limit", (signal) => { console.log("instance signal", signal) })
-        SignalProcessor.add(config, "count", (signal) => { console.log("instance signal", signal) })*/
-        config.limit = 12
-        config.count++
+        SignalProcessor.add(Ingredient, "name", (signal, reference) => { console.log("Signal from Ingredient class", signal, reference) })
+        SignalProcessor.add(recipe, SignalProcessor.WILDCARD, (signal, reference) => { console.log("Signal from Recipe instance", signal, reference) })
 
-        function randomString(
-            length = 16,
-            charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-        ) {
-            let s = ''
-            for (s; s.length < length; s += charset.charAt(Math.random() * charset.length | 0));
-            return s
-        }
+        // Create app using composed models. 
+        document.body.append(App.create([recipe, related]))
 
-        function randomAction() {
-            const rand = Math.random()
+        // almost same, but without using composed model
+        // document.body.append(App.create(recipe))
 
-            if (rand < .2) config.append({ title: randomString() })
-            else if (rand < .4 && config.list.length > 1) config.remove(config.list[(config.list.length * Math.random()) | 0])
-            else if (rand < .8 && config.list.length) config.list[(config.list.length * Math.random()) | 0].title = randomString()
-            else config.title = randomString()
-            setTimeout(randomAction, 100)
-        }
 
+        // Just change the values as if it were a plain old object or array. References will work too...
+
+        recipe.list[0].name = `Smashed ${recipe.list[0].name}`
+        recipe.list.push({ name: "Salty meatlike" })
+        recipe.title = "Captains Bucket"
+
+        related.bodyCount++
+
+        // Lets wait some seconds
 
         setTimeout(() => {
-            config.title = "Wonderbrew"
-            config.list[2].title = "questionable sauce"
-        }, 1000)
-        setTimeout(() => {
-            config.title = "Big stink soup"
-            config.append({ title: "A bottle of Rum" })
-            config.append({ title: "Frogfeet" })
+            recipe.title = `${recipe.title} Deluxe`
+            recipe.list.splice(2, 0, { name: "A bottle of Rum" })
+            related.bodyCount++
         }, 2000)
+
         setTimeout(() => {
-            config.title = "Better big stink soup"
-            config.remove(config.list[2])
-            //randomAction()
-        }, 3000)
+            recipe.list.unshift({ name: "Cannon powder peppers" })
+            related.bodyCount += 2
+        }, 4000)
+
     </script>
 </body>
 
