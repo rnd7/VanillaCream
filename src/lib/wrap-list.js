@@ -6,32 +6,39 @@ export function isWrappedList(item) {
     return wrappedLists.has(item)
 }
 
-export default function wrapList(type, list = []) {
+export default function wrapList(Type, list = []) {
+    if (isWrappedList(list) && Type === list.type) return list
     return new (class extends Array {
         constructor(...items) {
             super()
             wrappedLists.add(this)
             if (items) {
                 super.push(...items.map((item) => {
-                    if (item instanceof type) return item
-                    return new type(item)
+                    if (item instanceof Type) return item
+                    return new Type(item)
                 }))
             }
         }
+
+        get type() {
+            return Type
+        }
+
         push(...items) {
             const result = super.push(...items.map((item) => {
-                if (item instanceof type) return item
-                return new type(item)
+                if (item instanceof Type) return item
+                return new Type(item)
             }))
             SignalProcessor.send(this, "push")
             return result
         }
+
         unshift(...items) {
             const result = super.unshift(...items.map((item) => {
-                if (item instanceof type) return item
-                return new type(item)
+                if (item instanceof Type) return item
+                return new Type(item)
             }))
-            SignalProcessor.send(this, "push")
+            SignalProcessor.send(this, "unshift")
             return result
         }
 
@@ -50,8 +57,8 @@ export default function wrapList(type, list = []) {
         splice(...args) {
             args = args.map((value, index) => {
                 if (index < 2) return value
-                if (value instanceof type) return value
-                return new type(value)
+                if (value instanceof Type) return value
+                return new Type(value)
             })
             const result = super.splice(...args)
             SignalProcessor.send(this, "splice")
@@ -72,8 +79,8 @@ export default function wrapList(type, list = []) {
             if (end < start) return this
             let list = [].fill(value, 0, end - start).map((value, index) => {
                 if (index < 2) return value
-                if (value instanceof type) return value
-                return new type(value)
+                if (value instanceof Type) return value
+                return new Type(value)
             })
             const result = super.splice(...args)
             SignalProcessor.send(this, "fill")

@@ -5,7 +5,7 @@ import Ingredient from "./ingredient.js";
 export default class Recipe {
 
     #title = "Untitled"
-    #list = wrapList(Ingredient)
+    #ingredients = wrapList(Ingredient)
 
     constructor(opts) {
         wrapInstance(this, opts)
@@ -19,11 +19,11 @@ export default class Recipe {
         return this.#title
     }
 
-    set list(value) {
-        this.#list = wrapList(Ingredient, value)
+    set ingredients(value) {
+        this.#ingredients = wrapList(Ingredient, value)
     }
 
-    get list() {
-        return this.#list
+    get ingredients() {
+        return this.#ingredients
     }
 }

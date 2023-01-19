@@ -1,6 +1,6 @@
 import WebComponent from "../lib/web-component.js";
 
-export default class ListItem extends WebComponent {
+export default class Ingredient extends WebComponent {
 
     #name = ""
     constructor() {
@@ -9,16 +9,16 @@ export default class ListItem extends WebComponent {
 
     async init() {
         /* Load stylesheet document */
-        await this.appendStyleLink('components/list-item.css')
+        await this.appendStyleLink('components/ingredient.css')
 
         /* Load cached html fragment */
-        await this.appendHTML('components/list-item.html')
+        await this.appendHTML('components/ingredient.html')
 
         this.addRenderTask(() => {
             // the elements are not available before the first render cycle
             this.shadowRoot.querySelector('input.title').addEventListener("change", (ev) => {
                 // Change property value of wrapped instance
-                this.getReference("name").name = ev.target.value
+                this.getReferenceByProperty("name").name = ev.target.value
             })
             this.shadowRoot.querySelector('button.remove').addEventListener("pointerup", (ev) => {
                 // dispatch DOM Event

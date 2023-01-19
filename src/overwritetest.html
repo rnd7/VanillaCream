@@ -11,6 +11,7 @@
             padding: 0;
             margin: 0;
             min-height: 100vh;
+            background: #fafafa;
         }
 
         * {
@@ -52,8 +53,9 @@
         SignalProcessor.add(Ingredient, "name", (signal, reference) => { console.log("Signal from Ingredient class", signal, reference) })
         SignalProcessor.add(recipe, SignalProcessor.WILDCARD, (signal, reference) => { console.log("Signal from Recipe instance", signal, reference) })
 
+        const component = App.create([{ recipe: recipe }, { recipe: related }])
         // Create app using composed models. 
-        document.body.append(App.create([{ recipe: recipe }, { recipe: related }]))
+        document.body.append(component)
 
         // almost same, but without using composed model
         // document.body.append(App.create(recipe))
@@ -64,21 +66,32 @@
         recipe.ingredients[0].name = `Smashed ${recipe.ingredients[0].name}`
         recipe.ingredients.push({ name: "Salty meatlike" })
         recipe.title = "Captains Bucket"
+        recipe.title = "Captains special Bucket"
+        recipe.title = "Captains Delight"
 
         related.bodyCount++
 
-        // Lets wait some seconds
+
+        let oldList = recipe.ingredients
+        setTimeout(() => {
+            let newList = [{ name: "A bottle of Rum" }]
+            recipe.ingredients = newList
+            oldList.push({ name: "marmelade" })
+            recipe.ingredients.push({ name: "crispy batwings" })
+
+        }, 1000)
+
 
         setTimeout(() => {
-            recipe.title = `${recipe.title} Deluxe`
-            recipe.ingredients.splice(2, 0, { name: "A bottle of Rum" })
-            related.bodyCount++
+            component.recipe = { title: "Besty nasty" }
+            recipe.title = "Non bound soufle"
         }, 2000)
 
         setTimeout(() => {
-            recipe.ingredients.unshift({ name: "Cannon powder peppers" })
-            related.bodyCount += 2
-        }, 4000)
+            component.recipe = { ingredients: [{ name: "Leather boots" }, { name: "stickfishs" }] }
+            recipe.ingredients.pop()
+        }, 3000)
+
 
     </script>
 </body>
