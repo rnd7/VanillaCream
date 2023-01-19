@@ -1,5 +1,5 @@
-import wrapInstance from "../lib/wrap-instance.js";
-import wrapList from "../lib/wrap-list.js";
+import wrapInstance from "../../lib/wrap-instance.js";
+import wrapList from "../../lib/wrap-list.js";
 import Ingredient from "./ingredient.js";
 
 export default class Recipe {

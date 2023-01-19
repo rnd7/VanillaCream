@@ -1,4 +1,4 @@
-import WebComponent from "../lib/web-component.js";
+import WebComponent from "../../lib/web-component.js";
 import Recipe from "./recipe.js";
 
 export default class App extends WebComponent {
@@ -50,6 +50,7 @@ export default class App extends WebComponent {
                     background-position: 666px 50%;
                 }
             }
+
             .header {
             
                 display: flex;
@@ -58,20 +59,41 @@ export default class App extends WebComponent {
                 overflow: hidden;
                  
                 background-color: #101010;
-                background-image: linear-gradient(135deg, rgba(1,1,1,1) 10%, rgba(80,80,80,1) 15%, rgba(1,1,1,1) 20%, rgba(1,1,1,1) 30%, rgba(80,80,80,1) 35%, rgba(1,1,1,1) 40%, rgba(1,1,1,1) 50%, rgba(80,80,80,1) 55%, rgba(1,1,1,1) 60%, rgba(1,1,1,1) 70%, rgba(80,80,80,1) 75%, rgba(1,1,1,1) 80%, rgba(1,1,1,1) 90%, rgba(80,80,80,1) 95%, rgba(1,1,1,1) 100%);
+                background-image: linear-gradient(135deg, rgb(10,10,10) 0%, rgb(36,36,36) 10%, rgb(10,10,10) 20%,  rgb(36,36,36) 30%, rgb(10,10,10) 40%, rgb(36,36,36) 50%, rgb(10,10,10) 60%, rgb(36,36,36) 70%, rgb(10,10,10) 80%, rgb(36,36,36) 90%, rgb(10,10,10) 100%);
                 
                 background-size: 1332px 333px;
                 animation: gradient 12s linear infinite;
             }
 
 
+            @keyframes rotate {
+                0% {
+                    transform: rotate(0deg);
+                }
+                25% {
+                    transform: rotate(-5deg);
+                }
+                50%% {
+                    transform: rotate(0deg);
+                }
+                75% {
+                    transform: rotate(5deg);
+                }
+                100% {
+                    transform: rotate(0deg);
+                }
+            }
+            
             .logo {
                 text-align: center;
                 font-family: sans-serif;
                 font-size: 14em;
                 text-shadow: 0px 0px 10px black;
-                mix-blend-mode: hard-light;
-                opacity: .7;
+                /*mix-blend-mode: hard-light;
+                opacity: .7;*/
+                mix-blend-mode: color-dodge;
+                filter: brightness(0.9);
+                animation: rotate 12s linear infinite;
                 
             }
 
@@ -85,7 +107,7 @@ export default class App extends WebComponent {
                 margin-top: -140px;
                 margin-bottom: 30px;
                 text-shadow: 0px 10px 10px black;
-                mix-blend-mode: hard-light;
+                mix-blend-mode: color-dodge;
             }
 
             vc-recipe {

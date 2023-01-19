@@ -1,5 +1,5 @@
-import findChildIndex from "../lib/find-child-index.js";
-import WebComponent from "../lib/web-component.js";
+import findChildIndex from "../../lib/find-child-index.js";
+import WebComponent from "../../lib/web-component.js";
 import Ingredient from "./ingredient.js";
 
 export default class Recipe extends WebComponent {

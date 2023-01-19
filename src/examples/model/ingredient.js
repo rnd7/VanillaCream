@@ -1,4 +1,4 @@
-import wrapInstance from "../lib/wrap-instance.js";
+import wrapInstance from "../../lib/wrap-instance.js";
 
 export default class Ingredient {
 

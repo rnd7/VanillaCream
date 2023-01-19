@@ -1,4 +1,4 @@
-import WebComponent from "../lib/web-component.js";
+import WebComponent from "../../lib/web-component.js";
 
 export default class Ingredient extends WebComponent {
 

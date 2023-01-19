@@ -16,7 +16,7 @@ Mutability and references are cool stuff. Keep your hierarchy, no need to normal
 ## Try it now.
 Check out the pirate favorite stew recipe App.
 
-🚀 [Basic example](https://rnd7.github.io/VanillaCream/src/index.html)
+🚀 [Basic example](https://rnd7.github.io/VanillaCream/src/examples/index.html)
 
 ## Concept
 
