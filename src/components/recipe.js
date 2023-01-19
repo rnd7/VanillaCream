@@ -32,7 +32,7 @@ export default class Recipe extends WebComponent {
 
             .body-count {
                 font-family: sans-serif;
-                font-size: 4em;
+                font-size: 3em;
                 letter-spacing: 0.085em;
                 line-break: anywhere
             }
@@ -100,7 +100,9 @@ export default class Recipe extends WebComponent {
 
     set bodyCount(value) {
         this.#bodyCount = value
-        this.addRenderTask(() => { this.shadowRoot.querySelector('div.body-count').textContent = Array(this.#bodyCount).fill('☠️').join('') })
+        this.addRenderTask(() => {
+            this.shadowRoot.querySelector('div.body-count').textContent = Array(this.#bodyCount).fill('☠️').join('')
+        })
     }
 
     get ingredients() {

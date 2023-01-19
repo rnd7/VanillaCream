@@ -41,32 +41,51 @@ export default class App extends WebComponent {
                 flex-direction: column;
 
             }
+
+            @keyframes gradient {
+                0% {
+                    background-position: -666px 50%;
+                }
+                100% {
+                    background-position: 666px 50%;
+                }
+            }
             .header {
             
                 display: flex;
                 flex-direction: column;
-                padding-bottom: 20px;
+                padding-bottom: 30px;
                 overflow: hidden;
+                 
                 background-color: #101010;
-                background: linear-gradient(298deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 4%, rgba(23,22,22,1) 11%, rgba(19,19,19,1) 16%, rgba(17,17,17,1) 19%, rgba(0,0,0,1) 28%, rgba(22,22,22,1) 33%, rgba(27,27,27,1) 37%, rgba(0,0,0,1) 43%, rgba(0,0,0,1) 51%, rgba(19,19,19,1) 59%, rgba(0,0,0,1) 72%, rgba(24,24,24,1) 77%, rgba(0,0,0,1) 85%, rgba(33,33,33,1) 94%);
+                background-image: linear-gradient(135deg, rgba(1,1,1,1) 10%, rgba(80,80,80,1) 15%, rgba(1,1,1,1) 20%, rgba(1,1,1,1) 30%, rgba(80,80,80,1) 35%, rgba(1,1,1,1) 40%, rgba(1,1,1,1) 50%, rgba(80,80,80,1) 55%, rgba(1,1,1,1) 60%, rgba(1,1,1,1) 70%, rgba(80,80,80,1) 75%, rgba(1,1,1,1) 80%, rgba(1,1,1,1) 90%, rgba(80,80,80,1) 95%, rgba(1,1,1,1) 100%);
+                
+                background-size: 1332px 333px;
+                animation: gradient 12s linear infinite;
             }
+
 
             .logo {
                 text-align: center;
                 font-family: sans-serif;
                 font-size: 14em;
+                text-shadow: 0px 0px 10px black;
+                mix-blend-mode: hard-light;
+                opacity: .7;
                 
             }
 
             h2 {
-                font-family: serif;
-                font-size: 5em;
+                font-family: fantasy;
+                font-size: 4em;
+                line-height: 1em;
                 margin: 0;
                 text-align: center;
                 color: #c0c0c0;
-                margin-top: -150px;
+                margin-top: -140px;
                 margin-bottom: 30px;
                 text-shadow: 0px 10px 10px black;
+                mix-blend-mode: hard-light;
             }
 
             vc-recipe {
@@ -88,7 +107,7 @@ export default class App extends WebComponent {
 
         const logoEl = document.createElement('div')
         logoEl.classList.add("logo")
-        logoEl.textContent = '⚓'
+        logoEl.textContent = '☠️'//'⚓'
         headerEl.append(logoEl)
 
         const headlineEl = document.createElement('h2')
