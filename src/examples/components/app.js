@@ -88,8 +88,8 @@ export default class App extends WebComponent {
                 text-align: center;
                 font-family: sans-serif;
                 font-size: 14em;
-                text-shadow: 0px 0px 10px black;
-                /*mix-blend-mode: hard-light;
+                /*text-shadow: 0px 0px 10px black;
+                mix-blend-mode: hard-light;
                 opacity: .7;*/
                 mix-blend-mode: color-dodge;
                 filter: brightness(0.9);
